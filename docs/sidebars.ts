@@ -25,6 +25,7 @@ const sidebars: SidebarsConfig = {
             items: [
                 "openmdao/openmdao-clients",
                 "openmdao/openmdao-groups",
+                "openmdao/om4-clients",
             ],
         },
         {

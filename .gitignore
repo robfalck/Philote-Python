@@ -142,3 +142,5 @@ dmypy.json
 poetry.lock
 
 .vscode/
+# pixi environments
+.pixi/

@@ -1,0 +1,63 @@
+[workspace]
+name = "philote-mdo"
+channels = ["conda-forge"]
+# Matches om4's platforms. Intel Macs (osx-64) are not supported.
+platforms = [{ platform = "osx-arm64", macos = "15.0" }, "linux-64", "win-64"]
+
+# Philote itself is installed editable from this checkout; its pyproject pins
+# grpcio / protobuf, which are resolved from PyPI.
+[pypi-dependencies]
+philote-mdo = { path = ".", editable = true }
+
+[dependencies]
+python = ">=3.12,<3.14"
+pip = "*"
+numpy = "*"
+scipy = "*"
+
+[tasks]
+test = { cmd = "pytest tests", description = "Run the Philote test suite" }
+compile-proto = { cmd = "python utils/compile_proto.py", description = "Regenerate the gRPC stubs from proto/" }
+
+# --- OpenMDAO 3 bindings (philote_mdo.openmdao) -----------------------------
+[feature.om3.pypi-dependencies]
+openmdao = ">=3.0"
+
+# --- om4 bindings (philote_mdo.om4) -----------------------------------------
+# om4 is not published yet, so it is installed editable from a sibling
+# checkout at ../om4.git. It declares its runtime dependencies in its own
+# pixi.toml rather than its pyproject, so they are mirrored here.
+[feature.om4.dependencies]
+networkx = "*"
+pydantic = ">=2"
+pydantic-core = "*"
+rich = ">=15.0.0,<16"
+structlog = ">=25.5.0"
+
+[feature.om4.pypi-dependencies]
+om4 = { path = "../om4.git", editable = true }
+# om4.api reads asdex's version at import time and pulls in its visualization
+# tools, so these are effectively required (om4's own pixi.toml lists them as
+# top-level dependencies). Remove once OpenMDAO/om4#430 is fixed:
+# https://github.com/OpenMDAO/om4/issues/430
+jax = "*"
+jaxlib = "*"
+asdex = "*"
+nicegui = "*"
+
+# --- Developer tools ---------------------------------------------------------
+[feature.dev.dependencies]
+pytest = ">=7.0"
+pytest-cov = ">=4.0"
+flake8 = ">=6.0"
+black = ">=23.0"
+
+[feature.dev.pypi-dependencies]
+grpcio-tools = "~=1.66.0"
+protoletariat = ">=3.0"
+
+[environments]
+# Both binding sets side by side, plus dev tools.
+default = { features = ["om3", "om4", "dev"], solve-group = "default" }
+om3 = { features = ["om3", "dev"], solve-group = "default" }
+om4 = { features = ["om4", "dev"], solve-group = "default" }

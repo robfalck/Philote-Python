@@ -37,7 +37,8 @@ Some tests require OpenMDAO; install it first if you want full coverage.
 ```
 philote_mdo/
 ├── general/        # Core discipline / client / server base classes
-├── openmdao/       # OpenMDAO bindings (RemoteExplicit/Implicit, OpenMdaoSubProblem)
+├── openmdao/       # OpenMDAO 3 bindings (RemoteExplicit/Implicit, OpenMdaoSubProblem)
+├── om4/            # om4 (OpenMDAO 4) bindings, same classes; Python 3.12+
 ├── examples/       # Reference disciplines (Paraboloid, Quadratic, Sellar, Rosenbrock)
 ├── generated/      # Auto-generated gRPC stubs (do not edit by hand)
 └── utils/          # Shared utilities

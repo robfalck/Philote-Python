@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Features
+
+- Added om4 (OpenMDAO 4) bindings in the new `philote_mdo.om4` package,
+  alongside the unchanged OpenMDAO 3 bindings in `philote_mdo.openmdao`.
+  `RemoteExplicitComponent` and `RemoteImplicitComponent` are Pydantic
+  models that take a server `address` (plus optional `PhiloteTLS` settings)
+  instead of a gRPC channel, so they serialize to JSON and each process opens
+  its own channel. Discipline options go in `discipline_options` and are
+  checked against the server's options. Dynamic-shape inputs resolve by
+  connection; dynamic-shape outputs take their shape from `output_shapes`
+  (a variable to copy from, or a fixed shape). `OpenMdaoSubProblem` wraps an
+  om4 group as a Philote discipline. Discrete variables are refused until om4
+  supports them. Requires Python 3.12+ and om4.
+
+### Documentation & Infrastructure
+
+- Added a `pixi.toml` with `om3`, `om4` and `default` (both) environments.
+  The `om4` feature installs om4 editable from a sibling `../om4.git` checkout.
+- Added a docs page for the om4 bindings.
+
 ## [0.8.0] - 2026-05-16
 
 ### Features
